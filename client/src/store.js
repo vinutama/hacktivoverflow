@@ -5,7 +5,7 @@ import axiosInstance from 'axios'
 Vue.use(Vuex)
 
 let axios = axiosInstance.create({
-  baseURL: `http://localhost:3000`
+  baseURL: `https://hacktivoverflow8-server.khevin.pro`
 })
 
 

@@ -12,7 +12,7 @@ Vue.use(Vuetify)
 Vue.use(wysiwyg)
 
 Vue.prototype.$axios = axios.create({
-  baseURL: `http://localhost:3000`
+  baseURL: `https://hacktivoverflow8-server.khevin.pro`
 })
 
 Vue.config.productionTip = false
