@@ -38,7 +38,14 @@ export default new Router({
         {
           path: '/question/mine',
           name: 'myquestionlist',
-          component: () => import(/* webpackChunkName: "myquestionlist" */ '@/components/MyQuestion.vue')
+          component: () => import(/* webpackChunkName: "myquestionlist" */ '@/components/MyQuestion.vue'),
+          children: [
+            {
+              path: ':id',
+              name: 'editquestion',
+              component: () => import(/* webpackChunkName: "editquestion" */ '@/components/EditQuestion.vue')
+            }
+          ]
         }
       ]
     },

@@ -44,6 +44,7 @@ module.exports = {
     Question
       .find({})
       .populate('owner')
+      .sort('-updatedAt')
       .then(questions => {
         res.status(200).json(questions)
       })

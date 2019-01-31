@@ -124,5 +124,30 @@ module.exports = {
           message: err.message
         })
       })
+  },
+  findAllMyAnswers: function (req, res) {
+    Answer
+      .find({ owner: req.currentUser._id })
+      .sort('-updatedAt')
+      .then(answers => {
+        res.status(200).json(answers)
+      })
+      .catch(err => {
+        res.status(500).json({
+          message: err.message
+        })
+      })
+  },
+  helpfulAnswer: function (req, res) {
+    Answer
+      .findOneAndUpdate({ _id: req.params.id }, {$set: {status: true}}, {new: true})
+      .then(answer => {
+        res.status(200).json(answer)
+      })
+      .catch(err => {
+        res.status(500).json({
+          message: err.message
+        })
+      }) 
   }
 }

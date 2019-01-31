@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axiosInstance from 'axios'
+import moment from 'moment'
 
 Vue.use(Vuex)
 
@@ -19,7 +20,11 @@ export default new Vuex.Store({
     tags: [],
     tagsList: [],
     question: {},
-    myTags: []
+    myTags: [],
+    myAnswers: [],
+    myQuestions: [],
+    diffAnswer: '',
+    diffQuestion: ''
   },
   mutations: {
     registerMt (state, payload) {
@@ -90,6 +95,22 @@ export default new Vuex.Store({
     },
     taggedQuestionMt (state, payload) {
       state.questions = payload
+    },
+    myAnswerMt (state, payload) {
+      state.myAnswers = payload
+      let now = new Date()
+      let datenow = moment(now).format('D')
+      let lastAnswer = moment(payload[0].updatedAt).format('D')
+      let diff = datenow - lastAnswer
+      state.diffAnswer = diff
+    },
+    getMineQuestionMt (state, payload) {
+      state.myQuestions = payload
+      let now = new Date()
+      let datenow = moment(now).format('D')
+      let lastQuestion = moment(payload[0].updatedAt).format('D')
+      let diff = datenow - lastQuestion
+      state.diffQuestion = diff
     }
   },
   actions: {
@@ -398,6 +419,38 @@ export default new Vuex.Store({
       })
       .then(({ data }) => {
         commit('taggedQuestionMt', data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+    myAnswerAct ({ commit }) {
+      axios({
+        method: `GET`,
+        headers: {
+          token: localStorage.getItem('token')
+        },
+        url: `/answers`
+      })
+      .then(({ data }) => {
+        commit('myAnswerMt', data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+    getMineQuestion ({ commit }) {
+      axios({
+        method: `GET`,
+        url: `/questions/own/list`,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+      .then(({ data }) => {
+        console.log(data)
+        
+        commit('getMineQuestionMt', data)
       })
       .catch(err => {
         console.log(err)

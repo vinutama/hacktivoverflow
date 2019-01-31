@@ -83,6 +83,8 @@ export default {
     askQuestion () {
       this.$store.dispatch('askQuestionAct', {...this})
       this.$store.dispatch('getQuestionAct')
+      this.$store.dispatch('getMineQuestion')
+      this.$router.push('/question/mine')
     }
   }
 }

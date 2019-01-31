@@ -8,6 +8,8 @@ router.get('/:questionId', AnswerController.findAll)
 
 router.use(isLogin)
 
+router.get('/', AnswerController.findAllMyAnswers)
+
 /*create new answer*/
 router.post('/:questionId', AnswerController.create)
 
@@ -19,5 +21,7 @@ router.post('/:id/upvotes', isNotAnswerOwner, AnswerController.upAnswer)
 
 /*downvote answer*/
 router.post('/:id/downvotes', isNotAnswerOwner, AnswerController.downAnswer)
+
+router.post('/helpful/:id', isNotAnswerOwner, AnswerController.helpfulAnswer)
 
 module.exports = router

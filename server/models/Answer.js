@@ -30,6 +30,10 @@ const AnswerSchema = new Schema({
     type: Date,
     default: new Date()
   },
+  status: {
+    type: Boolean,
+    default: false
+  }
 })
 
 const Answer = mongoose.model('Answer', AnswerSchema)

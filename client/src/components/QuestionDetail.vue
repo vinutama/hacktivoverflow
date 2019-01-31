@@ -68,6 +68,17 @@
                      </v-card-text>
                      <v-card-text>
                       Last edited: {{convertDate(answer.updatedAt)}}
+                      <v-spacer></v-spacer>
+                       <v-btn v-show="!answer.status && user._id === question.owner._id" small @click.prevent="helpfulAnswer(answer._id)">
+                      Helpful?
+                    </v-btn>
+
+                    <v-chip color="teal" text-color="white" v-show="answer.status">
+                      <v-avatar>
+                        <v-icon>check_circle</v-icon>
+                      </v-avatar>
+                      Helpful Answer
+                    </v-chip>
                      </v-card-text>
                      <v-card-actions v-show=" user && user._id === answer.owner._id">
                        <v-btn fab small @click.prevent="editAnswer(answer._id)">
@@ -175,6 +186,7 @@ export default {
         timeout: this.timeout,
         content: this.content
         })
+        this.$store.dispatch('myAnswerAct')
          this.content = ''
       })
       .catch(err => {
@@ -258,6 +270,21 @@ export default {
     },
     convertDate(input) {
       return moment(input).format('DD MMMM, YYYY hh:mm A')
+    },
+    helpfulAnswer (id) {
+      this.$axios({
+        method: `POST`,
+        url: `/answers/helpful/${id}`,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+      .then(({ data }) => {
+        this.getAnswers(this.$route.params.questionId)
+      })
+      .catch(err => {
+        console.log(err)
+      })
     }
   }
 }

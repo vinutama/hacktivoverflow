@@ -55,13 +55,50 @@
             <v-icon>assessment</v-icon>
           </v-list-tile-action>
 
-          <v-list-tile-content>
-            <v-list-tile-title>My Activity</v-list-tile-title>
-          </v-list-tile-content>
+          <div class="text-xs-center">
+            <v-dialog
+              v-model="dialog"
+              width="500"
+            >
+              <v-btn
+                slot="activator"
+                flat
+              >
+              <v-list-tile-title>My Activity</v-list-tile-title>
+              </v-btn>
+
+              <v-card>
+                <v-card-title
+                  class="headline grey lighten-2"
+                  primary-title
+                >
+                  Your Questions Activity on Last {{diffQuestion}} days
+                </v-card-title>
+
+                <v-card-text>
+                  Total Questions: {{myQuestions.length}}
+                </v-card-text>
+
+                <v-divider></v-divider>
+                 <v-card-title
+                  class="headline grey lighten-2"
+                  primary-title
+                >
+                  Your Answers Activity on Last {{diffAnswer}} days
+                </v-card-title>
+
+                <v-card-text>
+                  Total Answers: {{myAnswers.length}}
+                </v-card-text>
+
+              </v-card>
+            </v-dialog>
+          </div>
+
         </v-list-tile>
       </v-list>
       <v-divider></v-divider>
-      <v-card light>
+      <v-card>
         <v-card-title>
           <v-icon>remove_red_eye</v-icon> 
           Watched Tags
@@ -107,15 +144,19 @@ export default {
   name: 'sidenav',
   data () {
     return {
-      chips: []
+      chips: [],
+      sheet: false,
+      dialog: false
     }
   },
+  props: ['myQuestion'],
   computed: mapState([
-    'user', 'isLogin', 'tagsList', 'myTags', 'questions'
+    'user', 'isLogin', 'tagsList', 'myTags', 'questions', 'myAnswers', 'diffAnswer', 'myQuestions', 'diffQuestion'
   ]),
   mounted () {
      this.$store.dispatch('getTagsAct')
      this.$store.dispatch('checkUser')
+     this.myAnswer()
   },
   methods: {
     addWatchTag () {
@@ -143,6 +184,9 @@ export default {
     },
     getHome () {
       this.$store.dispatch('getQuestionAct')
+    },
+    myAnswer () {
+      this.$store.dispatch('myAnswerAct')
     }
   }
 }
